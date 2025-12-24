@@ -13,7 +13,7 @@ import (
 type App struct {
 	Config     *config.Config
 	pgpHandler *utils.PGPHandler
-	Model      RootModel
+	Model      MenuModel
 }
 
 func NewApp() (*App, error) {
