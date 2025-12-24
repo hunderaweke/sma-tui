@@ -2,8 +2,10 @@ package app
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/hunderaweke/sma-tui/config"
 	"github.com/hunderaweke/sma-tui/utils"
 )
@@ -11,6 +13,7 @@ import (
 type App struct {
 	Config     *config.Config
 	pgpHandler *utils.PGPHandler
+	Model      RootModel
 }
 
 func NewApp() (*App, error) {
@@ -31,5 +34,13 @@ func NewApp() (*App, error) {
 		}
 	}
 	a.Config = c
+	a.Model = NewModel(a)
 	return &a, nil
+}
+func (a *App) Run() error {
+	p := tea.NewProgram(a.Model, tea.WithAltScreen())
+	if _, err := p.Run(); err != nil {
+		return fmt.Errorf("error: %w", err)
+	}
+	return nil
 }

@@ -16,8 +16,8 @@ type Room struct {
 }
 
 type Config struct {
-	Rooms       map[string]Room `json:"rooms,omitempty"`
-	DefaultRoom string          `json:"default_room,omitempty"`
+	Rooms           map[string]Room `json:"rooms,omitempty"`
+	DefaultIdentity string          `json:"default_room,omitempty"`
 }
 
 func New(handler utils.PGPHandler) (*Config, error) {
@@ -41,7 +41,7 @@ func New(handler utils.PGPHandler) (*Config, error) {
 	}
 	var c Config
 	c.Rooms = make(map[string]Room)
-	c.DefaultRoom = r.UniqueString
+	c.DefaultIdentity = r.UniqueString
 	c.AddRoom(r)
 	return &c, nil
 }
