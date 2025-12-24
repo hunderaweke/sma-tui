@@ -20,8 +20,7 @@ type Config struct {
 	DefaultRoom string          `json:"default_room,omitempty"`
 }
 
-func New() (*Config, error) {
-	handler := utils.NewPGPHandler()
+func New(handler utils.PGPHandler) (*Config, error) {
 	key, err := handler.GenerateKey()
 	if err != nil {
 		return nil, err

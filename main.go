@@ -1,14 +1,14 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/hunderaweke/sma-tui/config"
+	"github.com/hunderaweke/sma-tui/app"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 var (
@@ -143,27 +143,14 @@ var (
 )
 
 func main() {
-	// p := tea.NewProgram(model{}, tea.WithAltScreen()) // WithAltScreen hides your terminal history
-	// if _, err := p.Run(); err != nil {
-	// 	fmt.Printf("Error: %v", err)
-	// 	os.Exit(1)
-	// }
-	// c, err := NewConfig()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// if err = c.Save("config.json"); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// log.Println("Created Config")
-	c, err := config.Load("config.json")
+	a, err := app.NewApp()
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			c, _ = config.New()
-			c.Save("config.json")
-		} else {
-			log.Fatal(err)
-		}
+		log.Fatal(err)
 	}
-	log.Println(c)
+	identity = a.Config.DefaultRoom
+	p := tea.NewProgram(model{}, tea.WithAltScreen()) // WithAltScreen hides your terminal history
+	if _, err := p.Run(); err != nil {
+		fmt.Printf("Error: %v", err)
+		os.Exit(1)
+	}
 }
