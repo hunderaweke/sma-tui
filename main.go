@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -140,9 +140,17 @@ var (
 )
 
 func main() {
-	p := tea.NewProgram(model{}, tea.WithAltScreen()) // WithAltScreen hides your terminal history
-	if _, err := p.Run(); err != nil {
-		fmt.Printf("Error: %v", err)
-		os.Exit(1)
+	// p := tea.NewProgram(model{}, tea.WithAltScreen()) // WithAltScreen hides your terminal history
+	// if _, err := p.Run(); err != nil {
+	// 	fmt.Printf("Error: %v", err)
+	// 	os.Exit(1)
+	// }
+	c, err := NewConfig()
+	if err != nil {
+		log.Fatal(err)
 	}
+	if err = c.Save("config.json"); err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Created Config")
 }
