@@ -1,9 +1,11 @@
-package main
+package config
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/hunderaweke/sma-tui/utils"
 )
 
 type Room struct {
@@ -18,8 +20,8 @@ type Config struct {
 	DefaultRoom string          `json:"default_room,omitempty"`
 }
 
-func NewConfig() (*Config, error) {
-	handler := NewPGPHandler()
+func New() (*Config, error) {
+	handler := utils.NewPGPHandler()
 	key, err := handler.GenerateKey()
 	if err != nil {
 		return nil, err
@@ -45,7 +47,7 @@ func NewConfig() (*Config, error) {
 	return &c, nil
 }
 
-func LoadConfig(path string) (*Config, error) {
+func Load(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

@@ -1,11 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/hunderaweke/sma-tui/config"
 )
 
 var (
@@ -145,12 +148,22 @@ func main() {
 	// 	fmt.Printf("Error: %v", err)
 	// 	os.Exit(1)
 	// }
-	c, err := NewConfig()
+	// c, err := NewConfig()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// if err = c.Save("config.json"); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Println("Created Config")
+	c, err := config.Load("config.json")
 	if err != nil {
-		log.Fatal(err)
+		if errors.Is(err, os.ErrNotExist) {
+			c, _ = config.New()
+			c.Save("config.json")
+		} else {
+			log.Fatal(err)
+		}
 	}
-	if err = c.Save("config.json"); err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Created Config")
+	log.Println(c)
 }
